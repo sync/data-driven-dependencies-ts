@@ -1,6 +1,14 @@
-import {Network, QueryResponseCache} from 'relay-runtime';
+import {
+  FetchFunction,
+  GraphQLResponse,
+  GraphQLSingularResponse,
+  Network,
+  QueryResponseCache,
+  Variables,
+} from 'relay-runtime';
 
 import {registerLoader} from '../moduleLoader';
+import {NetworkWithResponseCache} from './sharedTypes';
 
 const ONE_MINUTE_IN_MS = 60 * 1000;
 
@@ -10,7 +18,11 @@ export function createNetwork() {
     ttl: ONE_MINUTE_IN_MS,
   });
 
-  async function fetchResponse(operation, variables, cacheConfig) {
+  const fetchResponse: FetchFunction = async (
+    operation,
+    variables,
+    cacheConfig,
+  ) => {
     const {id} = operation;
 
     const isQuery = operation.operationKind === 'query';
@@ -23,24 +35,38 @@ export function createNetwork() {
     }
 
     return networkFetch(id, variables);
-  }
+  };
 
-  async function fetchFn(...args) {
-    const response = await fetchResponse(...args);
+  const fetchFn: FetchFunction = async (...args) => {
+    const response = (await fetchResponse(...args)) as GraphQLResponse;
 
-    if (Array.isArray(response.extensions?.modules)) {
-      registerModuleLoaders(response.extensions.modules);
+    if (Array.isArray(response)) {
+      const responses = response as GraphQLSingularResponse[];
+      responses.forEach((singleResponse) => {
+        if (Array.isArray(singleResponse.extensions?.modules)) {
+          registerModuleLoaders(singleResponse.extensions?.modules as string[]);
+        }
+      });
+    } else {
+      const singleResponse = response as GraphQLSingularResponse;
+      if (Array.isArray(singleResponse.extensions?.modules)) {
+        registerModuleLoaders(singleResponse.extensions?.modules as string[]);
+      }
     }
 
     return response;
-  }
+  };
 
-  const network = Network.create(fetchFn);
+  const network = Network.create(fetchFn) as NetworkWithResponseCache;
   network.responseCache = responseCache;
+
   return network;
 }
 
-export async function networkFetch(id, variables) {
+export async function networkFetch(
+  id: string | undefined | null,
+  variables: Variables,
+) {
   const response = await fetch(
     // TODO: figure out how not to use hardcoded hostname and port
     // TODO: consider bypassing api fetch and directly invoking graphql on server
@@ -60,7 +86,7 @@ export async function networkFetch(id, variables) {
   return response.json();
 }
 
-function registerModuleLoaders(modules) {
+function registerModuleLoaders(modules: string[]) {
   modules.forEach((module) => {
     if (module.endsWith('$normalization.graphql')) {
       registerLoader(module, () => import(`../../__generated__/${module}`));
