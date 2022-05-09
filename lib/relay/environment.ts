@@ -2,6 +2,7 @@ import {Environment, RecordSource, Store} from 'relay-runtime';
 
 import moduleLoader from '../moduleLoader';
 import {createNetwork} from './network';
+import {NetworkWithResponseCache} from './sharedTypes';
 
 const IS_SERVER = typeof window === typeof undefined;
 const CLIENT_DEBUG = false;
@@ -11,8 +12,8 @@ export function createEnvironment() {
   // Operation loader is reponsible for loading JS modules/components
   // for data-processing and rendering
   const operationLoader = {
-    get: (name) => moduleLoader(name).get(),
-    load: (name) => moduleLoader(name).load(),
+    get: (name: string) => moduleLoader(name).get(),
+    load: (name: string) => moduleLoader(name).load(),
   };
 
   const network = createNetwork();
@@ -28,7 +29,9 @@ export function createEnvironment() {
     },
   });
 
-  environment.getNetwork().responseCache = network.responseCache;
+  const environmentNetwork =
+    environment.getNetwork() as NetworkWithResponseCache;
+  environmentNetwork.responseCache = network.responseCache;
 
   return environment;
 }
