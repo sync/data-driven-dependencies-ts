@@ -41,7 +41,10 @@ export default function RelayMatchContainer({match}) {
 }
 
 class ModuleLoaderError extends Error {
-  constructor(moduleLoaderName, error) {
+  moduleLoaderName: string;
+  error: Error;
+
+  constructor(moduleLoaderName: string, error: Error) {
     super('ModuleLoaderError: ' + error.message);
     this.moduleLoaderName = moduleLoaderName;
     this.error = error;

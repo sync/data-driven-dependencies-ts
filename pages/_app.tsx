@@ -1,18 +1,8 @@
+import '../styles/globals.css';
 import {ReactRelayContext, useRelayEnvironment} from 'react-relay';
 import {Suspense, useMemo} from 'react';
-
-import {createEnvironment} from './environment';
-
-export function ReactRelayContainer({Component, props}) {
-  const environment = useMemo(() => createEnvironment(), []);
-  return (
-    <ReactRelayContext.Provider value={{environment}}>
-      <Suspense fallback={null}>
-        <Hyderate Component={Component} props={props} />
-      </Suspense>
-    </ReactRelayContext.Provider>
-  );
-}
+import {createEnvironment} from '../lib/relay/environment';
+import {Layout} from '../components/LayoutComponents';
 
 function Hyderate({Component, props}) {
   const environment = useRelayEnvironment();
@@ -49,4 +39,17 @@ function Hyderate({Component, props}) {
   }, [props]);
 
   return <Component {...transformedProps} />;
+}
+
+export default function RelayApp({Component, pageProps}) {
+  const environment = useMemo(() => createEnvironment(), []);
+  return (
+    <Layout>
+      <ReactRelayContext.Provider value={{environment}}>
+        <Suspense fallback={null}>
+          <Hyderate Component={Component} props={pageProps} />
+        </Suspense>
+      </ReactRelayContext.Provider>
+    </Layout>
+  );
 }

@@ -3,7 +3,7 @@
   "schema": "./schema/schema.graphql",
   "artifactDirectory": "./__generated__",
   "excludes": ["**/.next/**", "**/node_modules/**", "**/schema/**"],
-  "language": "javascript",
+  "language": "typescript",
   "persistConfig": {
     "file": "./queryMap.json"
   }

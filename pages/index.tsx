@@ -32,7 +32,7 @@ export async function getServerSideProps() {
   return {
     props: {
       preloadedQueries: {
-        pagesIndexQuery: await getPreloadedQuery(pagesIndexQuery, {}),
+        pagesIndexQuery: await getPreloadedQuery(pagesIndexQuery.default, {}),
       },
     },
   };

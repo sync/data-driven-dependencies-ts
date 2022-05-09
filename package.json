@@ -7,11 +7,11 @@
   },
   "scripts": {
     "next": "next",
-    "dev": "mkdir -p __generated__ && touch queryMap.json && node ./schema/printSchema.mjs && concurrently \"next\" \"relay-compiler --watch\"",
+    "dev": "mkdir -p __generated__ && touch queryMap.json && node --require esbuild-register ./schema/printSchema.ts && concurrently \"next\" \"relay-compiler --watch\"",
     "build": "next build",
     "start": "next start",
     "relay": "relay-compiler",
-    "schema": "node ./schema/printSchema.mjs",
+    "schema": "node --require esbuild-register ./schema/printSchema.ts",
     "prettier": "prettier --write '{,!(node_modules|__generated__|\\.next)/**}*.{mjs,js,json}'"
   },
   "license": "MIT",
@@ -25,12 +25,17 @@
     "relay-runtime": "0.0.0-main-0a30fd6b"
   },
   "devDependencies": {
+    "@types/node": "17.0.31",
+    "@types/react": "18.0.9",
     "autoprefixer": "10.4.7",
     "concurrently": "7.1.0",
+    "esbuild": "0.14.38",
+    "esbuild-register": "3.3.2",
     "postcss": "8.4.13",
     "prettier": "2.6.2",
     "relay-compiler": "0.0.0-main-9ff377ef",
-    "tailwindcss": "3.0.24"
+    "tailwindcss": "3.0.24",
+    "typescript": "4.6.4"
   },
   "prettier": {
     "bracketSameLine": true,

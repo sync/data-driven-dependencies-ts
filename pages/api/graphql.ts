@@ -1,6 +1,6 @@
 import fs from 'fs';
 import {graphql} from 'graphql';
-import {schema, rootValue, dataDrivenDependencies} from '../../lib/graphql.mjs';
+import {schema, rootValue, dataDrivenDependencies} from '../../lib/graphql';
 import path from 'path';
 import getConfig from 'next/config';
 

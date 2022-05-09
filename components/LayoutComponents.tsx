@@ -39,7 +39,7 @@ export function Link(props) {
   const {children, ...rest} = props;
   return (
     <NextLink {...rest}>
-      <a className="text-base font-semibold text-gray-900 underline cursor-pointer text-blue-600 hover:text-blue-800 visited:text-purple-600">
+      <a className="text-base font-semibold underline cursor-pointer text-blue-600 hover:text-blue-800 visited:text-purple-600">
         {children}
       </a>
     </NextLink>

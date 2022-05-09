@@ -13,7 +13,7 @@ import {
   GraphQLUnionType,
 } from 'graphql';
 
-import {allBlogPosts, findBlogPost} from './blogPosts.mjs';
+import {allBlogPosts, findBlogPost} from './blogPosts';
 
 const DateTimeType = new GraphQLScalarType({
   name: 'DateTime',

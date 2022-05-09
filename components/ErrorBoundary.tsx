@@ -1,6 +1,16 @@
 import React from 'react';
 
-export default class ErrorBoundary extends React.Component {
+interface Props {
+  shouldCatchError: (error: Error) => boolean;
+  renderError: Function;
+  children: React.ReactNode;
+}
+
+interface State {
+  error: Error | null;
+}
+
+export default class ErrorBoundary extends React.Component<Props, State> {
   componentDidCatch(error) {
     if (!this.props.shouldCatchError || this.props.shouldCatchError(error)) {
       this.setState({error});
