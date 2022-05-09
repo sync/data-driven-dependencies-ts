@@ -1,42 +1,45 @@
-import fs from 'fs';
-import {graphql} from 'graphql';
+import {ExecutionResult, graphql} from 'graphql';
+import type {NextApiRequest, NextApiResponse} from 'next';
+import {Variables} from 'relay-runtime';
+import queryMap from '../../queryMap.json';
+import {handleCors} from '../../lib/cors';
 import {schema, rootValue, dataDrivenDependencies} from '../../lib/graphql';
-import path from 'path';
-import getConfig from 'next/config';
 
-const QUERY_MAP_FILE = path.resolve(
-  getConfig().serverRuntimeConfig.projectRoot,
-  './queryMap.json',
-);
-const queryMap = JSON.parse(fs.readFileSync(QUERY_MAP_FILE, 'utf8'));
+export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  await handleCors(req, res);
 
-export default async function handler(req, res) {
-  if (req.method === 'OPTIONS') {
-    res.end();
-    return false;
-  }
+  const requestParams = req.body as
+    | {
+        id: never;
+        query: string;
+        variables: Variables;
+      }
+    | {
+        id: string;
+        query: never;
+        variables: Variables;
+      }
+    | null
+    | undefined;
 
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
-  let response = {data: null};
-  if (req.method === 'POST') {
-    const buffers = [];
-    for await (const chunk of req) {
-      buffers.push(chunk);
-    }
-    const requestParams = JSON.parse(Buffer.concat(buffers).toString());
+  let response: undefined | null | ExecutionResult = {data: null};
+  if (req.method === 'POST' && requestParams) {
+    const mappedQueries = queryMap as Record<string, string>;
+
     dataDrivenDependencies.reset();
     response = await graphql({
       schema,
       rootValue,
-      source: requestParams.id
-        ? queryMap[requestParams.id]
-        : requestParams.query,
+      source:
+        requestParams && requestParams.id
+          ? (mappedQueries[requestParams.id] as string)
+          : requestParams.query,
       variableValues: requestParams.variables,
     });
   }
+
   if (response?.errors != null) {
+    // eslint-disable-next-line no-console
     console.error('GraphQL Server Errors', response.errors);
   }
 
@@ -44,11 +47,7 @@ export default async function handler(req, res) {
     modules: dataDrivenDependencies.getModules(),
   };
 
-  res.end(JSON.stringify(response));
-}
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
+  return res.status(200).json(response);
 };
+
+export default handler;
