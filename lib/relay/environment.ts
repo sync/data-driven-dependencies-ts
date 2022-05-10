@@ -8,7 +8,7 @@ const IS_SERVER = typeof window === typeof undefined;
 const CLIENT_DEBUG = false;
 const SERVER_DEBUG = false;
 
-export function createEnvironment() {
+export function createEnvironment(baseUrl: string) {
   // Operation loader is reponsible for loading JS modules/components
   // for data-processing and rendering
   const operationLoader = {
@@ -16,7 +16,7 @@ export function createEnvironment() {
     load: (name: string) => moduleLoader(name).load(),
   };
 
-  const network = createNetwork();
+  const network = createNetwork(baseUrl);
   const environment = new Environment({
     network,
     store: new Store(new RecordSource(), {operationLoader}),

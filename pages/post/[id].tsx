@@ -6,6 +6,7 @@ import {getPreloadedQuery} from '../../lib/relay/getServerSideProps';
 import {NextRelayPage} from '../../lib/relay/sharedTypes';
 import * as idPostPageQuery from '../../__generated__/IdPostPageQuery.graphql';
 import type {IdPostPageQuery} from '../../__generated__/IdPostPageQuery.graphql';
+import {GetServerSideProps} from 'next';
 
 // TODO: think about relay's query naming conventions
 const query = graphql`
@@ -30,14 +31,23 @@ const Index: NextRelayPage = ({queryRefs}) => {
 
 export default Index;
 
-export async function getServerSideProps(ctx) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const host = context.req.headers.host;
+
+  const baseUrl = ` ${host?.includes('localhost') ? 'http' : 'https'}://${
+    host ?? 'localhost:3000'
+  }`;
   return {
     props: {
       preloadedQueries: {
-        query: await getPreloadedQuery(idPostPageQuery.default, {
-          id: ctx.query.id,
-        }),
+        query: await getPreloadedQuery(
+          idPostPageQuery.default,
+          {
+            id: context.query.id,
+          },
+          baseUrl,
+        ),
       },
     },
   };
-}
+};

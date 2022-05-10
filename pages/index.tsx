@@ -7,6 +7,7 @@ import {getPreloadedQuery} from '../lib/relay/getServerSideProps';
 import * as pagesIndexQuery from '../__generated__/pagesIndexQuery.graphql';
 import type {pagesIndexQuery as PagesIndexQuery} from '../__generated__/pagesIndexQuery.graphql';
 import {NextRelayPage} from '../lib/relay/sharedTypes';
+import {GetServerSideProps} from 'next';
 
 const query = graphql`
   query pagesIndexQuery @preloadable {
@@ -33,12 +34,22 @@ const Index: NextRelayPage = ({queryRefs}) => {
 
 export default Index;
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const host = context.req.headers.host;
+
+  const baseUrl = ` ${host?.includes('localhost') ? 'http' : 'https'}://${
+    host ?? 'localhost:3000'
+  }`;
+
   return {
     props: {
       preloadedQueries: {
-        pagesIndexQuery: await getPreloadedQuery(pagesIndexQuery.default, {}),
+        pagesIndexQuery: await getPreloadedQuery(
+          pagesIndexQuery.default,
+          {},
+          baseUrl,
+        ),
       },
     },
   };
-}
+};

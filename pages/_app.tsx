@@ -63,8 +63,11 @@ function Hydrate<T extends {preloadedQueries: PreloadedQueries}>({
   return <Component {...(transformedProps as any)} />;
 }
 
-export default function RelayApp({Component, pageProps}) {
-  const environment = useMemo(() => createEnvironment(), []);
+export default function RelayApp<
+  T extends {baseUrl: string; preloadedQueries: PreloadedQueries},
+>({Component, pageProps}: {Component: React.ComponentType; pageProps: T}) {
+  const {baseUrl, ...otherProps} = pageProps;
+  const environment = useMemo(() => createEnvironment(baseUrl), [baseUrl]);
   return (
     <Layout>
       <ReactRelayContext.Provider value={{environment}}>

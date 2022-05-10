@@ -12,7 +12,7 @@ import {NetworkWithResponseCache} from './sharedTypes';
 
 const ONE_MINUTE_IN_MS = 60 * 1000;
 
-export function createNetwork() {
+export function createNetwork(baseUrl: string) {
   const responseCache = new QueryResponseCache({
     size: 100,
     ttl: ONE_MINUTE_IN_MS,
@@ -34,7 +34,7 @@ export function createNetwork() {
       }
     }
 
-    return networkFetch(id, variables);
+    return networkFetch(id, variables, baseUrl);
   };
 
   const fetchFn: FetchFunction = async (...args) => {
@@ -66,23 +66,19 @@ export function createNetwork() {
 export async function networkFetch(
   id: string | undefined | null,
   variables: Variables,
+  baseUrl: string,
 ) {
-  const response = await fetch(
-    // TODO: figure out how not to use hardcoded hostname and port
-    // TODO: consider bypassing api fetch and directly invoking graphql on server
-    process.env.GRAPHQL_ENDPOINT ?? 'http://localhost:3000/api/graphql',
-    {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id,
-        variables,
-      }),
+  const response = await fetch(`${baseUrl}/api/graphql`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-  );
+    body: JSON.stringify({
+      id,
+      variables,
+    }),
+  });
   return response.json();
 }
 
