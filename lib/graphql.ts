@@ -31,9 +31,9 @@ const JSDependencyField = {
     id: {type: GraphQLString},
   },
   type: new GraphQLNonNull(JSDependencyType),
-  resolve: async (_, {module}) => {
+  resolve: async (_: unknown, {module}: {module: unknown}) => {
     seenDataDrivenDependencies.add(module);
-    return module;
+    return module as Promise<unknown>;
   },
 };
 
@@ -171,7 +171,7 @@ export const rootValue = {
       allBlogPosts,
     };
   },
-  blogPost: ({id}) => {
+  blogPost: ({id}: {id: number}) => {
     return findBlogPost(id);
   },
 };
