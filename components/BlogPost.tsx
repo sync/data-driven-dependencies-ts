@@ -1,7 +1,8 @@
 import {useFragment, graphql} from 'react-relay';
 import {Title, Text} from '../components/LayoutComponents';
+import {BlogPost_post$key} from '../__generated__/BlogPost_post.graphql';
 
-const BlogPost = ({post}) => {
+const BlogPost = ({post}: {post: BlogPost_post$key}) => {
   const data = useFragment(
     graphql`
       fragment BlogPost_post on BlogPost {

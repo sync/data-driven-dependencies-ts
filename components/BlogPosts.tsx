@@ -1,9 +1,10 @@
 import {Suspense} from 'react';
 import {usePaginationFragment, graphql} from 'react-relay';
+import {BlogPosts_viewer$key} from '../__generated__/BlogPosts_viewer.graphql';
 import {Title, Button} from './LayoutComponents';
 import RelayMatchContainer from './RelayMatchContainer';
 
-export default function BlogPosts({viewer}) {
+export default function BlogPosts({viewer}: {viewer: BlogPosts_viewer$key}) {
   const {data, loadNext, hasNext, isLoadingNext} = usePaginationFragment(
     graphql`
       fragment BlogPosts_viewer on Viewer
@@ -32,7 +33,7 @@ export default function BlogPosts({viewer}) {
       <Title>Blog posts</Title>
       <div>
         <Suspense fallback={null}>
-          <ul className="space-y-5 mb-10">
+          <ul className="mb-10 space-y-5">
             {data?.allBlogPosts?.edges.map(({node}) => {
               return <RelayMatchContainer key={node.__id} match={node} />;
             })}
