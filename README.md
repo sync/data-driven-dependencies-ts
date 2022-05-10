@@ -2,6 +2,10 @@
 
 This is a reference implementation of the Relay integration with the Next.js framework
 
+# Original in JS
+
+https://github.com/relayjs/relay-examples/tree/main/data-driven-dependencies
+
 ## Overview
 
 This version contains an exploration of a few advanced features used in Relay:

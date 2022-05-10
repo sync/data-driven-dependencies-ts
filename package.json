@@ -1,7 +1,7 @@
 {
-  "name": "with-relay-modern",
+  "name": "data-driven-dependencies-ts",
   "version": "1.0.0",
-  "description": "Example of Next.js with Relay Modern",
+  "description": "Example of Next.js with Relay and MatchContainer using TypeScript",
   "engines": {
     "node": ">=16.0.0"
   },
