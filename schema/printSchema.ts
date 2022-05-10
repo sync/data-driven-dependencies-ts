@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { printSchema } from 'graphql';
 
-import { schema } from '../lib/graphql';
+import { schema } from '../src/lib/graphql';
 
 const text = printSchema(schema);
 

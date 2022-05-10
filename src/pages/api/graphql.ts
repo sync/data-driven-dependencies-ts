@@ -1,9 +1,9 @@
 import { ExecutionResult, graphql } from 'graphql';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Variables } from 'relay-runtime';
+import queryMap from '../../../queryMap.json';
 import { handleCors } from '../../lib/cors';
 import { schema, rootValue, dataDrivenDependencies } from '../../lib/graphql';
-import queryMap from '../../queryMap.json';
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await handleCors(req, res);

@@ -9,7 +9,7 @@
     "postinstall": "yarn deduplicate && patch-package",
     "deduplicate": "yarn yarn-deduplicate",
     "next": "next",
-    "dev": "mkdir -p __generated__ && touch queryMap.json && node --require esbuild-register ./schema/printSchema.ts && concurrently \"next\" \"relay-compiler --watch\"",
+    "dev": "mkdir -p src/__generated__ && touch queryMap.json && node --require esbuild-register ./schema/printSchema.ts && concurrently \"next\" \"relay-compiler --watch\"",
     "build": "next build",
     "start": "next start",
     "relay": "relay-compiler",

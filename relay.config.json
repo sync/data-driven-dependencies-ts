@@ -1,7 +1,7 @@
 {
-  "src": "./",
+  "src": "src",
   "schema": "./schema/schema.graphql",
-  "artifactDirectory": "./__generated__",
+  "artifactDirectory": "src/__generated__",
   "excludes": ["**/.next/**", "**/node_modules/**", "**/schema/**"],
   "language": "typescript",
   "persistConfig": {
