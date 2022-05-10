@@ -1,20 +1,27 @@
-import {Suspense} from 'react';
-import {usePaginationFragment, graphql} from 'react-relay';
-import {BlogPosts_viewer$key} from '../__generated__/BlogPosts_viewer.graphql';
-import {Title, Button} from './LayoutComponents';
+import { Suspense } from 'react';
+import { usePaginationFragment, graphql } from 'react-relay';
+import { BlogPosts_viewer$key } from '../__generated__/BlogPosts_viewer.graphql';
+import { Title, Button } from './LayoutComponents';
 import RelayMatchContainer from './RelayMatchContainer';
 
-export default function BlogPosts({viewer}: {viewer: BlogPosts_viewer$key}) {
-  const {data, loadNext, hasNext, isLoadingNext} = usePaginationFragment(
+export default function BlogPosts({
+  viewer,
+}: {
+  viewer: BlogPosts_viewer$key;
+}) {
+  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment(
     graphql`
       fragment BlogPosts_viewer on Viewer
       @refetchable(queryName: "BlogPostsPaginationQuery")
       @argumentDefinitions(
-        after: {type: String}
-        first: {type: Int, defaultValue: 2}
+        after: { type: String }
+        first: { type: Int, defaultValue: 2 }
       ) {
-        allBlogPosts(after: $after, first: $first, orderBy: {createdAt: desc})
-          @connection(key: "BlogPosts_allBlogPosts") {
+        allBlogPosts(
+          after: $after
+          first: $first
+          orderBy: { createdAt: desc }
+        ) @connection(key: "BlogPosts_allBlogPosts") {
           edges {
             node {
               __id
@@ -34,7 +41,7 @@ export default function BlogPosts({viewer}: {viewer: BlogPosts_viewer$key}) {
       <div>
         <Suspense fallback={null}>
           <ul className="mb-10 space-y-5">
-            {data?.allBlogPosts?.edges.map(({node}) => {
+            {data?.allBlogPosts?.edges.map(({ node }) => {
               return <RelayMatchContainer key={node.__id} match={node} />;
             })}
           </ul>
@@ -50,7 +57,7 @@ export default function BlogPosts({viewer}: {viewer: BlogPosts_viewer$key}) {
   );
 }
 
-function LoadMore({onClick, disabled}) {
+function LoadMore({ onClick, disabled }) {
   return (
     <Button size="standard" onClick={onClick} disabled={disabled}>
       Load More

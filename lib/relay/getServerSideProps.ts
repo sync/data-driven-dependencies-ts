@@ -1,8 +1,8 @@
-import {ConcreteRequest, Variables} from 'relay-runtime';
-import {networkFetch} from './network';
+import { ConcreteRequest, Variables } from 'relay-runtime';
+import { networkFetch } from './network';
 
 export async function getPreloadedQuery(
-  {params}: ConcreteRequest,
+  { params }: ConcreteRequest,
   variables: Variables,
   baseUrl: string,
 ) {

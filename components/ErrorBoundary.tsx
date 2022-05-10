@@ -13,7 +13,7 @@ interface State {
 export default class ErrorBoundary extends React.Component<Props, State> {
   componentDidCatch(error: Error) {
     if (!this.props.shouldCatchError || this.props.shouldCatchError(error)) {
-      this.setState({error});
+      this.setState({ error });
     }
   }
 
@@ -25,6 +25,6 @@ export default class ErrorBoundary extends React.Component<Props, State> {
   }
 
   _resetError = () => {
-    this.setState({error: null});
+    this.setState({ error: null });
   };
 }

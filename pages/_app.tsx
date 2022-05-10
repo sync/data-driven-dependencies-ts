@@ -1,10 +1,10 @@
 import '../styles/globals.css';
-import {Suspense, useMemo} from 'react';
-import {ReactRelayContext, useRelayEnvironment} from 'react-relay';
-import {GraphQLResponse, RequestParameters, Variables} from 'relay-runtime';
-import {Layout} from '../components/LayoutComponents';
-import {createEnvironment} from '../lib/relay/environment';
-import {NetworkWithResponseCache, QueryRefs} from '../lib/relay/sharedTypes';
+import { Suspense, useMemo } from 'react';
+import { ReactRelayContext, useRelayEnvironment } from 'react-relay';
+import { GraphQLResponse, RequestParameters, Variables } from 'relay-runtime';
+import { Layout } from '../components/LayoutComponents';
+import { createEnvironment } from '../lib/relay/environment';
+import { NetworkWithResponseCache, QueryRefs } from '../lib/relay/sharedTypes';
 
 type PreloadedQueries = Record<
   string,
@@ -15,7 +15,7 @@ type PreloadedQueries = Record<
   }
 >;
 
-function Hydrate<T extends {preloadedQueries: PreloadedQueries}>({
+function Hydrate<T extends { preloadedQueries: PreloadedQueries }>({
   Component,
   props,
 }: {
@@ -28,13 +28,13 @@ function Hydrate<T extends {preloadedQueries: PreloadedQueries}>({
     if (props == null) {
       return props;
     }
-    const {preloadedQueries, ...otherProps} = props;
+    const { preloadedQueries, ...otherProps } = props;
     if (preloadedQueries == null) {
       return props;
     }
 
     const queryRefs: QueryRefs = {};
-    for (const [queryName, {params, variables, response}] of Object.entries(
+    for (const [queryName, { params, variables, response }] of Object.entries(
       preloadedQueries,
     )) {
       (environment.getNetwork() as NetworkWithResponseCache).responseCache.set(
@@ -56,7 +56,7 @@ function Hydrate<T extends {preloadedQueries: PreloadedQueries}>({
       };
     }
 
-    return {...otherProps, queryRefs};
+    return { ...otherProps, queryRefs };
   }, [props, environment]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,11 +87,8 @@ export default function RelayApp<
     baseUrl: string | undefined | null;
     preloadedQueries: PreloadedQueries;
   },
->({Component, pageProps}: {Component: React.ComponentType; pageProps: T}) {
-  const {baseUrl, ...otherProps} = pageProps;
-
-  // eslint-disable-next-line no-console
-  console.log({baseUrl});
+>({ Component, pageProps }: { Component: React.ComponentType; pageProps: T }) {
+  const { baseUrl, ...otherProps } = pageProps;
 
   const environment = useMemo(
     () => createEnvironment(getBaseUrl(baseUrl)),
@@ -99,7 +96,7 @@ export default function RelayApp<
   );
   return (
     <Layout>
-      <ReactRelayContext.Provider value={{environment}}>
+      <ReactRelayContext.Provider value={{ environment }}>
         <Suspense fallback={null}>
           <Hydrate Component={Component} props={otherProps} />
         </Suspense>

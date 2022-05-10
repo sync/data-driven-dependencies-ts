@@ -7,8 +7,8 @@ import {
   Variables,
 } from 'relay-runtime';
 
-import {registerLoader} from '../moduleLoader';
-import {NetworkWithResponseCache} from './sharedTypes';
+import { registerLoader } from '../moduleLoader';
+import { NetworkWithResponseCache } from './sharedTypes';
 
 const ONE_MINUTE_IN_MS = 60 * 1000;
 
@@ -23,7 +23,7 @@ export function createNetwork(baseUrl: string) {
     variables,
     cacheConfig,
   ) => {
-    const {id} = operation;
+    const { id } = operation;
 
     const isQuery = operation.operationKind === 'query';
     const forceFetch = cacheConfig && cacheConfig.force;

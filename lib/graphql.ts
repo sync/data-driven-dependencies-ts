@@ -13,7 +13,7 @@ import {
   GraphQLUnionType,
 } from 'graphql';
 
-import {allBlogPosts, findBlogPost} from './blogPosts';
+import { allBlogPosts, findBlogPost } from './blogPosts';
 
 const DateTimeType = new GraphQLScalarType({
   name: 'DateTime',
@@ -27,11 +27,11 @@ const JSDependencyType = new GraphQLScalarType({
 
 const JSDependencyField = {
   args: {
-    module: {type: new GraphQLNonNull(GraphQLString)},
-    id: {type: GraphQLString},
+    module: { type: new GraphQLNonNull(GraphQLString) },
+    id: { type: GraphQLString },
   },
   type: new GraphQLNonNull(JSDependencyType),
-  resolve: async (_: unknown, {module}: {module: unknown}) => {
+  resolve: async (_: unknown, { module }: { module: unknown }) => {
     seenDataDrivenDependencies.add(module);
     return module as Promise<unknown>;
   },
@@ -50,11 +50,11 @@ export const dataDrivenDependencies = {
 const BlogPostType = new GraphQLObjectType({
   name: 'BlogPost',
   fields: {
-    createdAt: {type: new GraphQLNonNull(DateTimeType)},
-    id: {type: new GraphQLNonNull(GraphQLID)},
-    title: {type: new GraphQLNonNull(GraphQLString)},
-    content: {type: new GraphQLNonNull(GraphQLString)},
-    updatedAt: {type: new GraphQLNonNull(DateTimeType)},
+    createdAt: { type: new GraphQLNonNull(DateTimeType) },
+    id: { type: new GraphQLNonNull(GraphQLID) },
+    title: { type: new GraphQLNonNull(GraphQLString) },
+    content: { type: new GraphQLNonNull(GraphQLString) },
+    updatedAt: { type: new GraphQLNonNull(DateTimeType) },
     js: JSDependencyField,
   },
 });
@@ -62,11 +62,11 @@ const BlogPostType = new GraphQLObjectType({
 const FancyBlogPostType = new GraphQLObjectType({
   name: 'FancyBlogPost',
   fields: {
-    createdAt: {type: new GraphQLNonNull(DateTimeType)},
-    id: {type: new GraphQLNonNull(GraphQLID)},
-    title: {type: new GraphQLNonNull(GraphQLString)},
-    content: {type: new GraphQLNonNull(GraphQLString)},
-    updatedAt: {type: new GraphQLNonNull(DateTimeType)},
+    createdAt: { type: new GraphQLNonNull(DateTimeType) },
+    id: { type: new GraphQLNonNull(GraphQLID) },
+    title: { type: new GraphQLNonNull(GraphQLString) },
+    content: { type: new GraphQLNonNull(GraphQLString) },
+    updatedAt: { type: new GraphQLNonNull(DateTimeType) },
     js: JSDependencyField,
   },
 });
@@ -91,10 +91,10 @@ const BlogPostConnectionEdgeType = new GraphQLObjectType({
 const BlogPostConnectionPageInfoType = new GraphQLObjectType({
   name: 'BlogPostConnectionPageInfo',
   fields: {
-    startCursor: {type: GraphQLString},
-    endCursor: {type: GraphQLString},
-    hasNextPage: {type: GraphQLBoolean},
-    hasPreviousPage: {type: GraphQLBoolean},
+    startCursor: { type: GraphQLString },
+    endCursor: { type: GraphQLString },
+    hasNextPage: { type: GraphQLBoolean },
+    hasPreviousPage: { type: GraphQLBoolean },
   },
 });
 
@@ -113,8 +113,8 @@ const BlogPostConnectionType = new GraphQLObjectType({
 const OrderEnum = new GraphQLEnumType({
   name: 'Order',
   values: {
-    asc: {value: 'asc'},
-    desc: {value: 'desc'},
+    asc: { value: 'asc' },
+    desc: { value: 'desc' },
   },
 });
 
@@ -150,11 +150,11 @@ const ViewerType = new GraphQLObjectType({
 const QueryType = new GraphQLObjectType({
   name: 'Query',
   fields: {
-    viewer: {type: ViewerType},
+    viewer: { type: ViewerType },
     blogPost: {
       type: BlogPostUnion,
       args: {
-        id: {type: new GraphQLNonNull(GraphQLID)},
+        id: { type: new GraphQLNonNull(GraphQLID) },
       },
     },
   },
@@ -171,7 +171,7 @@ export const rootValue = {
       allBlogPosts,
     };
   },
-  blogPost: ({id}: {id: number}) => {
+  blogPost: ({ id }: { id: number }) => {
     return findBlogPost(id);
   },
 };

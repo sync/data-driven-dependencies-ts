@@ -1,7 +1,12 @@
-import {Environment, OperationLoader, RecordSource, Store} from 'relay-runtime';
+import {
+  Environment,
+  OperationLoader,
+  RecordSource,
+  Store,
+} from 'relay-runtime';
 import moduleLoader from '../moduleLoader';
-import {createNetwork} from './network';
-import {NetworkWithResponseCache} from './sharedTypes';
+import { createNetwork } from './network';
+import { NetworkWithResponseCache } from './sharedTypes';
 
 const IS_SERVER = typeof window === typeof undefined;
 const CLIENT_DEBUG = false;
@@ -18,7 +23,7 @@ export function createEnvironment(baseUrl: string) {
   const network = createNetwork(baseUrl);
   const environment = new Environment({
     network,
-    store: new Store(new RecordSource(), {operationLoader}),
+    store: new Store(new RecordSource(), { operationLoader }),
     operationLoader,
     isServer: IS_SERVER,
     log(event) {

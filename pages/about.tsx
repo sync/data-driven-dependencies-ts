@@ -1,4 +1,4 @@
-import {Content} from '../components/LayoutComponents';
+import { Content } from '../components/LayoutComponents';
 import Nav from '../components/Nav';
 
 export default function About() {

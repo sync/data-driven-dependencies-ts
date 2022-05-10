@@ -11,15 +11,15 @@ const blogPosts = [
   {
     id: getID(),
     __typename: 'BlogPost',
-    content: chance.paragraph({sentences: 2}),
-    title: chance.sentence({words: 5}),
+    content: chance.paragraph({ sentences: 2 }),
+    title: chance.sentence({ words: 5 }),
     createdAt: Date.now(),
   },
   {
     id: getID(),
     __typename: 'BlogPost',
-    content: chance.paragraph({sentences: 2}),
-    title: chance.sentence({words: 5}),
+    content: chance.paragraph({ sentences: 2 }),
+    title: chance.sentence({ words: 5 }),
     createdAt: Date.now(),
   },
 ];
@@ -28,8 +28,8 @@ function generateBlogPost() {
   const newPost = {
     id: getID(),
     __typename: chance.pickone(['BlogPost', 'FancyBlogPost']),
-    content: chance.paragraph({sentences: 2}),
-    title: chance.sentence({words: 5}),
+    content: chance.paragraph({ sentences: 2 }),
+    title: chance.sentence({ words: 5 }),
     createdAt: Date.now(),
   };
   blogPosts.push(newPost);
@@ -41,7 +41,7 @@ export function findBlogPost(id) {
 }
 
 // Fake implementation of the `allBlogPosts` connection
-export function allBlogPosts({after, _first}) {
+export function allBlogPosts({ after, _first }) {
   const blogPostsList = after ? [generateBlogPost()] : blogPosts;
   return {
     edges: blogPostsList.map((blogPost) => ({

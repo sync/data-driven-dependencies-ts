@@ -63,7 +63,7 @@ module.exports = {
         'no-console': 'error',
         '@typescript-eslint/no-unused-vars': [
           'error',
-          {argsIgnorePattern: '^_', varsIgnorePattern: 'should|expect|^_'},
+          { argsIgnorePattern: '^_', varsIgnorePattern: 'should|expect|^_' },
         ],
         '@typescript-eslint/no-unsafe-assignment': 'off',
         'import/order': [

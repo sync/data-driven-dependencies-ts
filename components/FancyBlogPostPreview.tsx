@@ -1,10 +1,10 @@
-import {useFragment, graphql} from 'react-relay';
-import {FancyBlogPostPreview_post$key} from '../__generated__/FancyBlogPostPreview_post.graphql';
-import {Link} from '../components/LayoutComponents';
+import { useFragment, graphql } from 'react-relay';
+import { FancyBlogPostPreview_post$key } from '../__generated__/FancyBlogPostPreview_post.graphql';
+import { Link } from '../components/LayoutComponents';
 
-type FancyListItemProps = {children?: React.ReactNode};
+type FancyListItemProps = { children?: React.ReactNode };
 
-function FancyListItem({children}: FancyListItemProps) {
+function FancyListItem({ children }: FancyListItemProps) {
   return <li className="shadow-xs rounded-md bg-gray-100 p-2">{children}</li>;
 }
 

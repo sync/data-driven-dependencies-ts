@@ -1,9 +1,9 @@
 import MatchContainer from 'react-relay/lib/relay-hooks/MatchContainer';
 import moduleLoader from '../lib/moduleLoader';
 import ErrorBoundary from './ErrorBoundary';
-import {Button} from './LayoutComponents';
+import { Button } from './LayoutComponents';
 
-export default function RelayMatchContainer({match}) {
+export default function RelayMatchContainer({ match }) {
   return (
     <ErrorBoundary
       shouldCatchError={(error) => error instanceof ModuleLoaderError}
@@ -15,11 +15,13 @@ export default function RelayMatchContainer({match}) {
             onClick={() => {
               moduleLoader(error.moduleLoaderName).resetError();
               resetError();
-            }}>
+            }}
+          >
             Reload
           </Button>
         </div>
-      )}>
+      )}
+    >
       <MatchContainer
         match={match}
         loader={(name) => {
