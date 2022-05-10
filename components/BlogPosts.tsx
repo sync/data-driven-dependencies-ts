@@ -51,7 +51,7 @@ export default function BlogPosts({viewer}) {
 
 function LoadMore({onClick, disabled}) {
   return (
-    <Button size="normal" onClick={onClick} disabled={disabled}>
+    <Button size="standard" onClick={onClick} disabled={disabled}>
       Load More
     </Button>
   );
