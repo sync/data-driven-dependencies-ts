@@ -1,9 +1,24 @@
-const loaders = new Map();
-const loadedModules = new Map();
-const failedModules = new Map();
-const pendingLoaders = new Map();
+type JSModule =
+  | {
+      kind: 'pending';
+      reject: (reason?: Error) => void;
+      resolve: (value: JSModule | undefined) => void;
+    }
+  | {
+      kind: 'registered';
+      loaderFn: () => Promise<JSModuleLoaded>;
+    };
 
-export default function moduleLoader(name) {
+type JSModuleLoaded = {
+  default: JSModule;
+};
+
+const loaders = new Map<string, JSModule>();
+const loadedModules = new Map<string, JSModuleLoaded>();
+const failedModules = new Map<string, Error>();
+const pendingLoaders = new Map<string, Promise<JSModule | undefined>>();
+
+export default function moduleLoader(name: string) {
   return {
     getError() {
       return failedModules.get(name);
@@ -12,13 +27,13 @@ export default function moduleLoader(name) {
       failedModules.delete(name);
     },
     get() {
-      const module = loadedModules.get(name);
-      return module == null ? null : module.default;
+      const jsModule = loadedModules.get(name);
+      return jsModule == null ? null : jsModule.default;
     },
     load() {
       const loader = loaders.get(name);
       if (loader == null) {
-        const promise = new Promise((resolve, reject) => {
+        const promise = new Promise<JSModule | undefined>((resolve, reject) => {
           loaders.set(name, {
             kind: 'pending',
             resolve,
@@ -34,18 +49,23 @@ export default function moduleLoader(name) {
             return module.default;
           },
           (error) => {
-            failedModules.set(name, error);
+            failedModules.set(name, error as Error);
             throw error;
           },
         );
       } else if (loader.kind == 'pending') {
         return pendingLoaders.get(name);
+      } else {
+        return;
       }
     },
   };
 }
 
-export function registerLoader(name, loaderFn) {
+export function registerLoader(
+  name: string,
+  loaderFn: () => Promise<JSModuleLoaded>,
+) {
   const loader = loaders.get(name);
   if (loader == null) {
     loaders.set(name, {
@@ -60,9 +80,9 @@ export function registerLoader(name, loaderFn) {
         loader.resolve(module.default);
       },
       (error) => {
-        failedModules.set(name, error);
+        failedModules.set(name, error as Error);
         pendingLoaders.delete(name);
-        loader.reject(error);
+        loader.reject(error as Error);
       },
     );
   }
