@@ -1,19 +1,30 @@
-import MatchContainer from 'react-relay/lib/relay-hooks/MatchContainer';
+import MatchContainer, {
+  MatchPointer,
+  TypenameOnlyPointer,
+} from 'react-relay/lib/relay-hooks/MatchContainer';
 import moduleLoader from '../lib/moduleLoader';
 import ErrorBoundary from './ErrorBoundary';
 import { Button } from './LayoutComponents';
 
-export default function RelayMatchContainer({ match }) {
+export type RelayMatchContainerProps = {
+  match?: MatchPointer | TypenameOnlyPointer | null | undefined;
+};
+
+export default function RelayMatchContainer({
+  match,
+}: RelayMatchContainerProps) {
   return (
     <ErrorBoundary
       shouldCatchError={(error) => error instanceof ModuleLoaderError}
-      renderError={(error: ModuleLoaderError, resetError) => (
+      renderError={(error: Error, resetError) => (
         <div className="inline-block rounded-md bg-red-200 px-2 py-1">
-          Failed to load {error.moduleLoaderName}{' '}
+          Failed to load {(error as ModuleLoaderError).moduleLoaderName}{' '}
           <Button
             size="small"
             onClick={() => {
-              moduleLoader(error.moduleLoaderName).resetError();
+              moduleLoader(
+                (error as ModuleLoaderError).moduleLoaderName,
+              ).resetError();
               resetError();
             }}
           >

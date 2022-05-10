@@ -7,7 +7,7 @@ import RelayMatchContainer from './RelayMatchContainer';
 export default function BlogPosts({
   viewer,
 }: {
-  viewer: BlogPosts_viewer$key;
+  viewer: BlogPosts_viewer$key | null;
 }) {
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment(
     graphql`
@@ -41,7 +41,12 @@ export default function BlogPosts({
       <div>
         <Suspense fallback={null}>
           <ul className="mb-10 space-y-5">
-            {data?.allBlogPosts?.edges.map(({ node }) => {
+            {data?.allBlogPosts?.edges?.map((edge) => {
+              const node = edge?.node;
+              if (!node) {
+                return null;
+              }
+
               return <RelayMatchContainer key={node.__id} match={node} />;
             })}
           </ul>
@@ -57,7 +62,12 @@ export default function BlogPosts({
   );
 }
 
-function LoadMore({ onClick, disabled }) {
+type LoadMoreProps = {
+  disabled?: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+};
+
+function LoadMore({ onClick, disabled }: LoadMoreProps) {
   return (
     <Button size="standard" onClick={onClick} disabled={disabled}>
       Load More

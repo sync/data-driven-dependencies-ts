@@ -32,7 +32,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       rootValue,
       source:
         requestParams && requestParams.id
-          ? mappedQueries[requestParams.id]
+          ? (mappedQueries[requestParams.id] as string)
           : requestParams.query,
       variableValues: requestParams.variables,
     });

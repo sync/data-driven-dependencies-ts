@@ -37,23 +37,23 @@ function Hydrate<T extends { preloadedQueries: PreloadedQueries }>({
     for (const [queryName, { params, variables, response }] of Object.entries(
       preloadedQueries,
     )) {
-      (environment.getNetwork() as NetworkWithResponseCache).responseCache.set(
-        params.id,
-        variables,
-        response,
-      );
-      // TODO: create using a function exported from react-relay package
-      queryRefs[queryName] = {
-        environment,
-        fetchKey: params.id,
-        fetchPolicy: 'store-or-network',
-        isDisposed: false,
-        name: params.name,
-        kind: 'PreloadedQuery',
-        variables,
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        dispose: () => {},
-      };
+      if (params.id) {
+        (
+          environment.getNetwork() as NetworkWithResponseCache
+        ).responseCache.set(params.id, variables, response);
+        // TODO: create using a function exported from react-relay package
+        queryRefs[queryName] = {
+          environment,
+          fetchKey: params.id,
+          fetchPolicy: 'store-or-network',
+          isDisposed: false,
+          name: params.name,
+          kind: 'PreloadedQuery',
+          variables,
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          dispose: () => {},
+        };
+      }
     }
 
     return { ...otherProps, queryRefs };

@@ -27,7 +27,7 @@ export function createNetwork(baseUrl: string) {
 
     const isQuery = operation.operationKind === 'query';
     const forceFetch = cacheConfig && cacheConfig.force;
-    if (isQuery && !forceFetch) {
+    if (isQuery && !forceFetch && id) {
       const fromCache = responseCache.get(id, variables);
       if (fromCache != null) {
         return Promise.resolve(fromCache);

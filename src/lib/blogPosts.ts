@@ -36,12 +36,18 @@ function generateBlogPost() {
   return newPost;
 }
 
-export function findBlogPost(id) {
+export function findBlogPost(id: number) {
   return blogPosts.find((post) => post.id == id);
 }
 
 // Fake implementation of the `allBlogPosts` connection
-export function allBlogPosts({ after, _first }) {
+export function allBlogPosts({
+  after,
+  first: _first,
+}: {
+  after?: number;
+  first?: number;
+}) {
   const blogPostsList = after ? [generateBlogPost()] : blogPosts;
   return {
     edges: blogPostsList.map((blogPost) => ({
@@ -50,8 +56,8 @@ export function allBlogPosts({ after, _first }) {
       node: blogPost,
     })),
     pageInfo: {
-      startCursor: `c-${blogPostsList[0].id}`,
-      endCursor: `c-${blogPostsList[blogPostsList.length - 1].id}`,
+      startCursor: `c-${blogPostsList[0]?.id ?? 0}`,
+      endCursor: `c-${blogPostsList[blogPostsList.length - 1]?.id ?? 0}`,
       hasNextPage: true,
       hasPrevPage: false,
     },

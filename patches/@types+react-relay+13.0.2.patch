@@ -9,7 +9,7 @@ index b14e68a..0d5915a 100755
 +export * from './lib';
 diff --git a/node_modules/@types/react-relay/lib/relay-hooks/MatchContainer.d.ts b/node_modules/@types/react-relay/lib/relay-hooks/MatchContainer.d.ts
 new file mode 100755
-index 0000000..80b9a3b
+index 0000000..f924756
 --- /dev/null
 +++ b/node_modules/@types/react-relay/lib/relay-hooks/MatchContainer.d.ts
 @@ -0,0 +1,91 @@
@@ -83,7 +83,7 @@ index 0000000..80b9a3b
 + *
 + */
 +
-+type TypenameOnlyPointer = Readonly<{ __typename: string }>;
++export type TypenameOnlyPointer = Readonly<{ __typename: string }>;
 +export type MatchPointer = Readonly<{
 +    __fragmentPropName?: string | null | undefined;
 +    __module_component?: unknown | undefined;
