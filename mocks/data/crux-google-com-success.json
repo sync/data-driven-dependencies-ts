@@ -1,0 +1,97 @@
+{
+  "record": {
+    "key": {
+      "origin": "https://google.com"
+    },
+    "metrics": {
+      "cumulative_layout_shift": {
+        "histogram": [
+          {
+            "start": "0.00",
+            "end": "0.10",
+            "density": 0.6038603860386037
+          },
+          {
+            "start": "0.10",
+            "end": "0.25",
+            "density": 0.32853285328532844
+          },
+          {
+            "start": "0.25",
+            "density": 0.067606760676067967
+          }
+        ],
+        "percentiles": {
+          "p75": "0.16"
+        }
+      },
+      "first_contentful_paint": {
+        "histogram": [
+          {
+            "start": 0,
+            "end": 1800,
+            "density": 0.43955604439556317
+          },
+          {
+            "start": 1800,
+            "end": 3000,
+            "density": 0.22207779222077936
+          },
+          {
+            "start": 3000,
+            "density": 0.33836616338365755
+          }
+        ],
+        "percentiles": {
+          "p75": 3530
+        }
+      },
+      "first_input_delay": {
+        "histogram": [
+          {
+            "start": 0,
+            "end": 100,
+            "density": 0.93422630947620977
+          },
+          {
+            "start": 100,
+            "end": 300,
+            "density": 0.038484606157536995
+          },
+          {
+            "start": 300,
+            "density": 0.027289084366253359
+          }
+        ],
+        "percentiles": {
+          "p75": 9
+        }
+      },
+      "largest_contentful_paint": {
+        "histogram": [
+          {
+            "start": 0,
+            "end": 2500,
+            "density": 0.37627474505099234
+          },
+          {
+            "start": 2500,
+            "end": 4000,
+            "density": 0.18451309738052515
+          },
+          {
+            "start": 4000,
+            "density": 0.43921215756848248
+          }
+        ],
+        "percentiles": {
+          "p75": 5562
+        }
+      }
+    }
+  },
+  "urlNormalizationDetails": {
+    "originalUrl": "https://google.com/search",
+    "normalizedUrl": "https://google.com"
+  }
+}
