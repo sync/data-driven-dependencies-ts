@@ -8,7 +8,7 @@ export default function RelayMatchContainer({match}) {
   return (
     <ErrorBoundary
       shouldCatchError={(error) => error instanceof ModuleLoaderError}
-      renderError={(error, resetError) => (
+      renderError={(error: ModuleLoaderError, resetError) => (
         <div className="bg-red-200 rounded-md px-2 py-1 inline-block">
           Failed to load {error.moduleLoaderName}{' '}
           <Button
@@ -23,7 +23,7 @@ export default function RelayMatchContainer({match}) {
       )}>
       <MatchContainer
         match={match}
-        loader={(name) => {
+        loader={(name: string) => {
           const loader = moduleLoader(name);
           const error = loader.getError();
           if (error) {

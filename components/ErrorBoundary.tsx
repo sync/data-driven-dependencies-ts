@@ -2,7 +2,7 @@ import React from 'react';
 
 interface Props {
   shouldCatchError: (error: Error) => boolean;
-  renderError: Function;
+  renderError: (error: Error, resetError: () => void) => React.ReactNode;
   children: React.ReactNode;
 }
 
