@@ -85,8 +85,10 @@ export async function networkFetch(
 function registerModuleLoaders(modules: string[]) {
   modules.forEach((module) => {
     if (module.endsWith('$normalization.graphql')) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       registerLoader(module, () => import(`../../__generated__/${module}`));
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       registerLoader(module, () => import(`../../components/${module}`));
     }
   });

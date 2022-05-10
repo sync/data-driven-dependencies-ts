@@ -1,12 +1,12 @@
-import {graphql, usePreloadedQuery, useLazyLoadQuery} from 'react-relay';
+import {GetServerSideProps} from 'next';
+import {graphql, usePreloadedQuery} from 'react-relay';
+import * as idPostPageQuery from '../../__generated__/IdPostPageQuery.graphql';
+import type {IdPostPageQuery} from '../../__generated__/IdPostPageQuery.graphql';
 import BlogPost from '../../components/BlogPost';
 import {Content} from '../../components/LayoutComponents';
 import Nav from '../../components/Nav';
 import {getPreloadedQuery} from '../../lib/relay/getServerSideProps';
 import {NextRelayPage} from '../../lib/relay/sharedTypes';
-import * as idPostPageQuery from '../../__generated__/IdPostPageQuery.graphql';
-import type {IdPostPageQuery} from '../../__generated__/IdPostPageQuery.graphql';
-import {GetServerSideProps} from 'next';
 
 // TODO: think about relay's query naming conventions
 const query = graphql`
@@ -18,7 +18,11 @@ const query = graphql`
 `;
 
 const Index: NextRelayPage = ({queryRefs}) => {
-  const {blogPost} = usePreloadedQuery<IdPostPageQuery>(query, queryRefs.query);
+  const {blogPost} = usePreloadedQuery<IdPostPageQuery>(
+    query,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unsafe-argument
+    queryRefs.query!,
+  );
   return (
     <>
       <Nav />

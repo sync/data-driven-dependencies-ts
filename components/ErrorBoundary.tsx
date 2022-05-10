@@ -1,9 +1,9 @@
 import React from 'react';
 
 interface Props {
-  shouldCatchError: (error: Error) => boolean;
-  renderError: (error: Error, resetError: () => void) => React.ReactNode;
   children: React.ReactNode;
+  renderError: (error: Error, resetError: () => void) => React.ReactNode;
+  shouldCatchError: (error: Error) => boolean;
 }
 
 interface State {
@@ -11,7 +11,7 @@ interface State {
 }
 
 export default class ErrorBoundary extends React.Component<Props, State> {
-  componentDidCatch(error) {
+  componentDidCatch(error: Error) {
     if (!this.props.shouldCatchError || this.props.shouldCatchError(error)) {
       this.setState({error});
     }

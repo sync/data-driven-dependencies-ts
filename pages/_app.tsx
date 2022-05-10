@@ -1,10 +1,10 @@
 import '../styles/globals.css';
-import {ReactRelayContext, useRelayEnvironment} from 'react-relay';
 import {Suspense, useMemo} from 'react';
-import {createEnvironment} from '../lib/relay/environment';
-import {Layout} from '../components/LayoutComponents';
-import {NetworkWithResponseCache, QueryRefs} from '../lib/relay/sharedTypes';
+import {ReactRelayContext, useRelayEnvironment} from 'react-relay';
 import {GraphQLResponse, RequestParameters, Variables} from 'relay-runtime';
+import {Layout} from '../components/LayoutComponents';
+import {createEnvironment} from '../lib/relay/environment';
+import {NetworkWithResponseCache, QueryRefs} from '../lib/relay/sharedTypes';
 
 type PreloadedQueries = Record<
   string,
@@ -57,22 +57,51 @@ function Hydrate<T extends {preloadedQueries: PreloadedQueries}>({
     }
 
     return {...otherProps, queryRefs};
-  }, [props]);
+  }, [props, environment]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return <Component {...(transformedProps as any)} />;
 }
 
+const getBaseUrl = (
+  baseUrlFromProps: string | null | undefined,
+  fallbackUrl = 'http://localhost:3000',
+) => {
+  if (baseUrlFromProps) {
+    return baseUrlFromProps;
+  }
+
+  if (
+    typeof window !== 'undefined' &&
+    window.location.protocol &&
+    window.location.host
+  ) {
+    return `${window.location.protocol}//${window.location.host}`;
+  }
+
+  return fallbackUrl;
+};
+
 export default function RelayApp<
-  T extends {baseUrl: string; preloadedQueries: PreloadedQueries},
+  T extends {
+    baseUrl: string | undefined | null;
+    preloadedQueries: PreloadedQueries;
+  },
 >({Component, pageProps}: {Component: React.ComponentType; pageProps: T}) {
   const {baseUrl, ...otherProps} = pageProps;
-  const environment = useMemo(() => createEnvironment(baseUrl), [baseUrl]);
+
+  // eslint-disable-next-line no-console
+  console.log({baseUrl});
+
+  const environment = useMemo(
+    () => createEnvironment(getBaseUrl(baseUrl)),
+    [baseUrl],
+  );
   return (
     <Layout>
       <ReactRelayContext.Provider value={{environment}}>
         <Suspense fallback={null}>
-          <Hydrate Component={Component} props={pageProps} />
+          <Hydrate Component={Component} props={otherProps} />
         </Suspense>
       </ReactRelayContext.Provider>
     </Layout>

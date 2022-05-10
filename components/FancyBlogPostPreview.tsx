@@ -1,6 +1,6 @@
 import {useFragment, graphql} from 'react-relay';
-import {Link} from '../components/LayoutComponents';
 import {FancyBlogPostPreview_post$key} from '../__generated__/FancyBlogPostPreview_post.graphql';
+import {Link} from '../components/LayoutComponents';
 
 type FancyListItemProps = {children?: React.ReactNode};
 

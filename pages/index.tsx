@@ -1,13 +1,13 @@
-import {graphql, usePreloadedQuery, useLazyLoadQuery} from 'react-relay';
+import {GetServerSideProps} from 'next';
+import {graphql, usePreloadedQuery} from 'react-relay';
 
-import BlogPosts from '../components/BlogPosts';
-import Nav from '../components/Nav';
-import {Content} from '../components/LayoutComponents';
-import {getPreloadedQuery} from '../lib/relay/getServerSideProps';
 import * as pagesIndexQuery from '../__generated__/pagesIndexQuery.graphql';
 import type {pagesIndexQuery as PagesIndexQuery} from '../__generated__/pagesIndexQuery.graphql';
+import BlogPosts from '../components/BlogPosts';
+import {Content} from '../components/LayoutComponents';
+import Nav from '../components/Nav';
+import {getPreloadedQuery} from '../lib/relay/getServerSideProps';
 import {NextRelayPage} from '../lib/relay/sharedTypes';
-import {GetServerSideProps} from 'next';
 
 const query = graphql`
   query pagesIndexQuery @preloadable {
@@ -20,7 +20,8 @@ const query = graphql`
 const Index: NextRelayPage = ({queryRefs}) => {
   const {viewer} = usePreloadedQuery<PagesIndexQuery>(
     query,
-    queryRefs.pagesIndexQuery,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unsafe-argument
+    queryRefs.pagesIndexQuery!,
   );
   return (
     <>

@@ -1,7 +1,7 @@
-import {NextURL} from 'next/dist/server/web/next-url';
-import NextLink from 'next/link';
-import React from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import {UrlObject} from 'url';
+import React from 'react';
+import NextLink from 'next/link';
 
 export type LayoutProps = {children?: React.ReactNode};
 
@@ -36,10 +36,10 @@ export function Text({children}: TextProps): JSX.Element {
 }
 
 export type ButtonProps = {
-  size: 'small' | 'standard';
   children?: React.ReactNode;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  size: 'small' | 'standard';
 };
 
 export function Button({size, children, onClick, disabled}: ButtonProps) {

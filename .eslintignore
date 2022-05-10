@@ -1,0 +1,15 @@
+node_modules
+out
+.next
+.vscode
+coverage
+.DS_Store
+yarn-debug.log*
+yarn-error.log*
+.vercel
+README.md
+TEST-NOTES.md
+tsconfig.tsbuildinfo
+__generated__/
+schema.graphql
+queryMap.json
