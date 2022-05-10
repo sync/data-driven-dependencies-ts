@@ -3,8 +3,25 @@ import {ReactRelayContext, useRelayEnvironment} from 'react-relay';
 import {Suspense, useMemo} from 'react';
 import {createEnvironment} from '../lib/relay/environment';
 import {Layout} from '../components/LayoutComponents';
+import {NetworkWithResponseCache, QueryRefs} from '../lib/relay/sharedTypes';
+import {GraphQLResponse, RequestParameters, Variables} from 'relay-runtime';
 
-function Hyderate({Component, props}) {
+type PreloadedQueries = Record<
+  string,
+  {
+    params: RequestParameters;
+    response: GraphQLResponse;
+    variables: Variables;
+  }
+>;
+
+function Hydrate<T extends {preloadedQueries: PreloadedQueries}>({
+  Component,
+  props,
+}: {
+  Component: React.ComponentType;
+  props: T;
+}) {
   const environment = useRelayEnvironment();
 
   const transformedProps = useMemo(() => {
@@ -16,13 +33,15 @@ function Hyderate({Component, props}) {
       return props;
     }
 
-    const queryRefs = {};
+    const queryRefs: QueryRefs = {};
     for (const [queryName, {params, variables, response}] of Object.entries(
       preloadedQueries,
     )) {
-      environment
-        .getNetwork()
-        .responseCache.set(params.id, variables, response);
+      (environment.getNetwork() as NetworkWithResponseCache).responseCache.set(
+        params.id,
+        variables,
+        response,
+      );
       // TODO: create using a function exported from react-relay package
       queryRefs[queryName] = {
         environment,
@@ -32,13 +51,16 @@ function Hyderate({Component, props}) {
         name: params.name,
         kind: 'PreloadedQuery',
         variables,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        dispose: () => {},
       };
     }
 
     return {...otherProps, queryRefs};
   }, [props]);
 
-  return <Component {...transformedProps} />;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return <Component {...(transformedProps as any)} />;
 }
 
 export default function RelayApp({Component, pageProps}) {
@@ -47,7 +69,7 @@ export default function RelayApp({Component, pageProps}) {
     <Layout>
       <ReactRelayContext.Provider value={{environment}}>
         <Suspense fallback={null}>
-          <Hyderate Component={Component} props={pageProps} />
+          <Hydrate Component={Component} props={pageProps} />
         </Suspense>
       </ReactRelayContext.Provider>
     </Layout>

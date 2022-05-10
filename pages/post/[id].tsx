@@ -3,6 +3,9 @@ import BlogPost from '../../components/BlogPost';
 import {Content} from '../../components/LayoutComponents';
 import Nav from '../../components/Nav';
 import {getPreloadedQuery} from '../../lib/relay/getServerSideProps';
+import {NextRelayPage} from '../../lib/relay/sharedTypes';
+import * as idPostPageQuery from '../../__generated__/IdPostPageQuery.graphql';
+import type {IdPostPageQuery} from '../../__generated__/IdPostPageQuery.graphql';
 
 // TODO: think about relay's query naming conventions
 const query = graphql`
@@ -13,8 +16,8 @@ const query = graphql`
   }
 `;
 
-export default function Post(props) {
-  const {blogPost} = usePreloadedQuery(query, props.queryRefs.query);
+const Index: NextRelayPage = ({queryRefs}) => {
+  const {blogPost} = usePreloadedQuery<IdPostPageQuery>(query, queryRefs.query);
   return (
     <>
       <Nav />
@@ -23,13 +26,17 @@ export default function Post(props) {
       </Content>
     </>
   );
-}
+};
+
+export default Index;
 
 export async function getServerSideProps(ctx) {
   return {
     props: {
       preloadedQueries: {
-        query: await getPreloadedQuery(query, {id: ctx.query.id}),
+        query: await getPreloadedQuery(idPostPageQuery.default, {
+          id: ctx.query.id,
+        }),
       },
     },
   };

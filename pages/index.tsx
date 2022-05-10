@@ -4,8 +4,11 @@ import BlogPosts from '../components/BlogPosts';
 import Nav from '../components/Nav';
 import {Content} from '../components/LayoutComponents';
 import {getPreloadedQuery} from '../lib/relay/getServerSideProps';
+import * as pagesIndexQuery from '../__generated__/pagesIndexQuery.graphql';
+import type {pagesIndexQuery as PagesIndexQuery} from '../__generated__/pagesIndexQuery.graphql';
+import {NextRelayPage} from '../lib/relay/sharedTypes';
 
-const pagesIndexQuery = graphql`
+const query = graphql`
   query pagesIndexQuery @preloadable {
     viewer {
       ...BlogPosts_viewer
@@ -13,10 +16,10 @@ const pagesIndexQuery = graphql`
   }
 `;
 
-export default function Index(props) {
-  const {viewer} = usePreloadedQuery(
-    pagesIndexQuery,
-    props.queryRefs.pagesIndexQuery,
+const Index: NextRelayPage = ({queryRefs}) => {
+  const {viewer} = usePreloadedQuery<PagesIndexQuery>(
+    query,
+    queryRefs.pagesIndexQuery,
   );
   return (
     <>
@@ -26,7 +29,9 @@ export default function Index(props) {
       </Content>
     </>
   );
-}
+};
+
+export default Index;
 
 export async function getServerSideProps() {
   return {
