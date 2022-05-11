@@ -5,17 +5,21 @@
   "engines": {
     "node": ">=16.0.0"
   },
+  "license": "MIT",
   "scripts": {
-    "prepare": "(is-ci || husky install)",
+    "prepare": "(is-ci || husky install) && yarn relay:setup",
     "postinstall": "yarn deduplicate && patch-package",
     "deduplicate": "yarn yarn-deduplicate",
-    "next": "next",
-    "dev": "mkdir -p src/__generated__ && touch queryMap.json && node --require esbuild-register ./schema/printSchema.ts && concurrently \"next\" \"relay-compiler --watch\"",
-    "build": "next build",
+    "dev:next": "next dev",
+    "dev:relay": "yarn relay --watch",
+    "dev": "run-p dev:*",
+    "build": "yarn relay && next build",
     "start": "next start",
     "start:mocks": "NODE_ENV=production node --require esbuild-register --require ./mocks --require dotenv/config ./node_modules/.bin/next start",
+    "relay:setup": "mkdir -p src/__generated__ && touch queryMap.json",
+    "update-schema": "node --require esbuild-register ./schema/printSchema.ts",
+    "prerelay": "yarn update-schema",
     "relay": "relay-compiler",
-    "schema": "node --require esbuild-register ./schema/printSchema.ts",
     "lint:eslint": "eslint --ext .ts,tsx .",
     "lint:prettier": "prettier . --check",
     "lint:style": "stylelint **/*.{css,scss}",
@@ -34,7 +38,6 @@
     "ci": "yarn typecheck && yarn lint && yarn test",
     "storybook": "start-storybook -p 6006"
   },
-  "license": "MIT",
   "dependencies": {
     "chance": "1.1.8",
     "graphql": "16.5.0",
@@ -70,7 +73,6 @@
     "@typescript-eslint/eslint-plugin": "5.23.0",
     "@typescript-eslint/parser": "5.23.0",
     "autoprefixer": "10.4.7",
-    "concurrently": "7.1.0",
     "cypress": "9.6.1",
     "esbuild": "0.14.38",
     "esbuild-register": "3.3.2",
