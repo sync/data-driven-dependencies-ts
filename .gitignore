@@ -43,3 +43,7 @@ queryMap.json
 # storybook
 storybook-static
 build-storybook.log
+
+# cypress
+**/cypress/screenshots
+**/cypress/videos

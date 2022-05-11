@@ -32,5 +32,11 @@
     "noErrorTruncation": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["./out/**/*", "./node_modules/**/*", "./coverage", "./.next"]
+  "exclude": [
+    "./out/**/*",
+    "./node_modules/**/*",
+    "./coverage",
+    "./.next",
+    "./cypress"
+  ]
 }

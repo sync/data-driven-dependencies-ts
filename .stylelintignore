@@ -11,6 +11,8 @@ storybook-static
 README.md
 TEST-NOTES.md
 tsconfig.tsbuildinfo
+/cypress/screenshots
+/cypress/videos
 __generated__/
 schema.graphql
 queryMap.json
