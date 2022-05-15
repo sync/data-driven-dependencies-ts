@@ -45,8 +45,8 @@
     "nextjs-cors": "2.1.1",
     "react": "18.1.0",
     "react-dom": "18.1.0",
-    "react-relay": "0.0.0-main-0a30fd6b",
-    "relay-runtime": "0.0.0-main-0a30fd6b"
+    "react-relay": "0.0.0-main-9c14d82f",
+    "relay-runtime": "0.0.0-main-9c14d82f"
   },
   "devDependencies": {
     "@commitlint/cli": "16.2.4",
@@ -98,7 +98,7 @@
     "postcss": "8.4.13",
     "prettier": "2.6.2",
     "prettier-plugin-tailwindcss": "0.1.10",
-    "relay-compiler": "0.0.0-main-9ff377ef",
+    "relay-compiler": "0.0.0-main-9c14d82f",
     "start-server-and-test": "1.14.0",
     "stylelint": "14.8.2",
     "stylelint-config-prettier": "9.0.3",
