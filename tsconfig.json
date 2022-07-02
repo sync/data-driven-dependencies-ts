@@ -37,6 +37,7 @@
     "./node_modules/**/*",
     "./coverage",
     "./.next",
-    "./cypress"
+    "./cypress",
+    "./cypress.config.ts"
   ]
 }

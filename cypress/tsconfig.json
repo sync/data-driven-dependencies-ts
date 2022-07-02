@@ -4,24 +4,23 @@
     "../node_modules/@testing-library/jest-dom"
   ],
   "include": [
-    "./index.ts",
     "e2e/**/*",
-    "plugins/**/*",
     "support/**/*",
-    "../../../node_modules/cypress",
-    "../../../node_modules/@testing-library/cypress"
+    "../node_modules/cypress",
+    "../node_modules/@testing-library/cypress",
+    "../cypress.config.ts"
   ],
   "compilerOptions": {
     "baseUrl": ".",
     "noEmit": true,
     "types": ["node", "cypress", "@testing-library/cypress"],
     "esModuleInterop": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "moduleResolution": "node",
     "target": "es2019",
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "typeRoots": ["../types", "../../../node_modules/@types"]
+    "typeRoots": ["../types", "../node_modules/@types"]
   }
 }
